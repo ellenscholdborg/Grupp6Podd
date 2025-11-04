@@ -12,6 +12,7 @@ namespace Grupp6Podd
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+            //Test2
         }
     }
 }
