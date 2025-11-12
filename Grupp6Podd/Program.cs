@@ -13,6 +13,7 @@ namespace Grupp6Podd
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
             //Test2
+            //test3
         }
     }
 }
