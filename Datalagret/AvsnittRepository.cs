@@ -17,8 +17,7 @@ namespace Datalagret
         {
             allaAvsnitt = new List<Avsnitt>();
         }
-        public void Add(Avsnitt ettAvsnitt
-            )
+        public void Add(Avsnitt ettAvsnitt)
         {
             allaAvsnitt.Add(ettAvsnitt);
         }

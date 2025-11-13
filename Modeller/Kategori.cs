@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modeller
 {
-    internal class Kategori
+    public class Kategori
     {
     }
 }
