@@ -5,7 +5,7 @@ using Datalagret;
 
 namespace Affärslagret
 {
-    public class Class1
+    public class IAvsnittService
     {
 
     }
