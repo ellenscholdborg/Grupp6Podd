@@ -18,6 +18,6 @@ namespace Affärslagret
 
         bool Update(T item);    
 
-        bool Delete(T item);
+        bool Delete(int id);
     }
 }
