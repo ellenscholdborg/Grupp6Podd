@@ -9,9 +9,9 @@ namespace Presentationslagret
     {
 
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
-            https://aka.ms/applicationconfiguration.
+        https://aka.ms/applicationconfiguration;
             Application.Run(new Form1());
         }
     }
