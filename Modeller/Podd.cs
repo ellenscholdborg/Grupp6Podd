@@ -9,13 +9,13 @@ namespace Modeller
         [BsonId] // anger att detta är dokumentents unika _id
         public string Id { get; set; }
 
-        [BsonElement("Name")]
-        public string Name { get; set; }
+        [BsonElement("Namn")]
+        public string Namn { get; set; }
 
-        public Podd (string nyttId, string NyttName)
+        public Podd (string nyttId, string NyttNamn)
         {
             Id = nyttId;
-            Name = NyttName;
+            Namn = NyttNamn;
         }
 
     }
