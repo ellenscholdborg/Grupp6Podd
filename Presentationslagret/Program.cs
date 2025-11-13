@@ -11,7 +11,7 @@ namespace Presentationslagret
         [STAThread]
         static void Main()
         {
-        https://aka.ms/applicationconfiguration;
+        //https://aka.ms/applicationconfiguration;
             Application.Run(new Form1());
         }
     }
