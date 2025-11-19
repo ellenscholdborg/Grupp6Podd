@@ -27,9 +27,9 @@ namespace Presentationslagret
                 allaAvsnitt = await enPoddService.LasInAllaAvsnitt(källa);
 
                 listBoxAvsnitt.DataSource = null;
-                listBoxAvsnitt.DisplayMember="Rubrik";
+                listBoxAvsnitt.DisplayMember = "Rubrik";
                 listBoxAvsnitt.DataSource = allaAvsnitt;
-                rtbGaTillAvsnitt.Clear();              
+                rtbGaTillAvsnitt.Clear();
             }
             catch (Exception ex)
             {
@@ -37,10 +37,34 @@ namespace Presentationslagret
             }
         }
         private void listBoxAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
-        { 
+        {
+            richTextBox1.Clear();
+            rtbGaTillAvsnitt.Clear();
+
             if (listBoxAvsnitt.SelectedItem is Avsnitt valtAvsnitt)
-            {              
-                if (valtAvsnitt.Lank != null)
+            {
+                richTextBox1.AppendText($"Titel: {valtAvsnitt.Rubrik}");
+
+                richTextBox1.AppendText($"Publicerad: {valtAvsnitt.Publiceringsdatum.DateTime.ToShortDateString()}");
+
+                richTextBox1.AppendText("---------------------------------");
+
+                if (!string.IsNullOrWhiteSpace(valtAvsnitt.Sammanfattning))
+                {
+                    string kortSammanfattning = valtAvsnitt.Sammanfattning.Length > 150
+                                              ? valtAvsnitt.Sammanfattning.Substring(0, 150) + "..."
+                                              : valtAvsnitt.Sammanfattning;
+                    richTextBox1.AppendText($"Sammanfattning: {kortSammanfattning}");
+                }
+                if (!string.IsNullOrWhiteSpace(valtAvsnitt.Beskrivning))
+                {
+                    string kortBeskrivning = valtAvsnitt.Beskrivning.Length > 150
+                                           ? valtAvsnitt.Beskrivning.Substring(0, 150) + "..."
+                                           : valtAvsnitt.Beskrivning;
+
+                    richTextBox1.AppendText($"Beskrivning (start): {kortBeskrivning}");
+                }
+                if (!string.IsNullOrWhiteSpace(valtAvsnitt.Lank))
                 {
                     rtbGaTillAvsnitt.Text = valtAvsnitt.Lank;
                 }
@@ -51,13 +75,15 @@ namespace Presentationslagret
             }
             else
             {
+                richTextBox1.Clear();
                 rtbGaTillAvsnitt.Clear();
             }
-
         }
+
         
     }
 }
+
     
            
 

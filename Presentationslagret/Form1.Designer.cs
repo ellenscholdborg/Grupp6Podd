@@ -1,4 +1,5 @@
-﻿namespace Presentationslagret
+﻿
+namespace Presentationslagret
 {
     partial class Form1
     {
@@ -22,23 +23,19 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             lblLaggTillRss = new Label();
             textBoxRssLank = new TextBox();
             btnHamtaAvsnitt = new Button();
             listBoxAvsnitt = new ListBox();
-            listBoxOmAvsnitt = new ListBox();
             lblAvsnitt = new Label();
             lblGaTillAvsnitt = new Label();
             lblOmAvsnitt = new Label();
             comboBoxLaggTillLista = new ComboBox();
             btnMinaListor = new Button();
             rtbGaTillAvsnitt = new RichTextBox();
+            richTextBox1 = new RichTextBox();
             SuspendLayout();
             // 
             // lblLaggTillRss
@@ -75,14 +72,6 @@
             listBoxAvsnitt.Size = new Size(238, 224);
             listBoxAvsnitt.TabIndex = 3;
             listBoxAvsnitt.SelectedIndexChanged += listBoxAvsnitt_SelectedIndexChanged;
-            // 
-            // listBoxOmAvsnitt
-            // 
-            listBoxOmAvsnitt.FormattingEnabled = true;
-            listBoxOmAvsnitt.Location = new Point(490, 151);
-            listBoxOmAvsnitt.Name = "listBoxOmAvsnitt";
-            listBoxOmAvsnitt.Size = new Size(264, 224);
-            listBoxOmAvsnitt.TabIndex = 5;
             // 
             // lblAvsnitt
             // 
@@ -137,18 +126,27 @@
             rtbGaTillAvsnitt.TabIndex = 11;
             rtbGaTillAvsnitt.Text = "";
             // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(490, 151);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(298, 224);
+            richTextBox1.TabIndex = 12;
+            richTextBox1.Text = "";
+            richTextBox1.TextChanged += richTextBox1_TextChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(richTextBox1);
             Controls.Add(rtbGaTillAvsnitt);
             Controls.Add(btnMinaListor);
             Controls.Add(comboBoxLaggTillLista);
             Controls.Add(lblOmAvsnitt);
             Controls.Add(lblGaTillAvsnitt);
             Controls.Add(lblAvsnitt);
-            Controls.Add(listBoxOmAvsnitt);
             Controls.Add(listBoxAvsnitt);
             Controls.Add(btnHamtaAvsnitt);
             Controls.Add(textBoxRssLank);
@@ -159,18 +157,23 @@
             PerformLayout();
         }
 
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
         #endregion
 
         private Label lblLaggTillRss;
         private TextBox textBoxRssLank;
         private Button btnHamtaAvsnitt;
         private ListBox listBoxAvsnitt;
-        private ListBox listBoxOmAvsnitt;
         private Label lblAvsnitt;
         private Label lblGaTillAvsnitt;
         private Label lblOmAvsnitt;
         private ComboBox comboBoxLaggTillLista;
         private Button btnMinaListor;
         private RichTextBox rtbGaTillAvsnitt;
+        private RichTextBox richTextBox1;
     }
 }
