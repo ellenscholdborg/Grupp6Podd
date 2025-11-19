@@ -10,15 +10,14 @@ namespace Modeller
     public class Kategori
     {
         [BsonId] // anger att detta är dokumentents unika _id
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [BsonElement("Namn")]
         public string Namn { get; set; }
 
-        public Kategori(int nyttId, string NyttNamn)
+        public Kategori()
         {
-            Id = nyttId;
-            Namn = NyttNamn;
+            
         }
 
     }

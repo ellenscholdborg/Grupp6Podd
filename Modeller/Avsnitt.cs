@@ -9,16 +9,18 @@ namespace Modeller
 {
     public class Avsnitt
     {
-        [BsonId] // anger att detta är dokumentents unika _id
-        public int Id { get; set; }
+        [BsonId] 
+        public string Id { get; set; }
 
-        [BsonElement("Namn")]
-        public string Namn { get; set; }
+        [BsonElement("Rubrik")]
+        public string Rubrik { get; set; }
+        public DateTimeOffset Publiceringsdatum { get; set; }
+        public string Lank { get; set; }
+        public string? KällaReferens { get; set; }
 
-        public Avsnitt(int nyttId, string NyttNamn)
+        public Avsnitt()
         {
-            Id = nyttId;
-            Namn = NyttNamn;
+            
         }
 
     }

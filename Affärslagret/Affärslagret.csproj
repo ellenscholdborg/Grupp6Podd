@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Datalagret\Datalagret.csproj" />
     <ProjectReference Include="..\Modeller\Modeller.csproj" />
   </ItemGroup>
 

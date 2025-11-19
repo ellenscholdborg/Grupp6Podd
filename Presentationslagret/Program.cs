@@ -1,6 +1,8 @@
 using Affärslagret;
+using Datalagret;
 using Modeller;
 using MongoDB.Driver;
+using System.Windows.Forms;
 
 
 namespace Presentationslagret
@@ -11,8 +13,13 @@ namespace Presentationslagret
         [STAThread]
         static void Main()
         {
-        https://aka.ms/applicationconfiguration;
-            Application.Run(new Form1());
+            HttpClient http = new HttpClient();
+            var klient = new PoddRSS(http);
+
+            var service = new PoddService(klient);
+
+            ApplicationConfiguration.Initialize();
+            Application.Run(new Form1(service));
         }
     }
 }

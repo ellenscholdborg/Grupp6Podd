@@ -7,15 +7,15 @@ namespace Modeller
     {
 
         [BsonId] // anger att detta är dokumentents unika _id
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [BsonElement("Namn")]
         public string Namn { get; set; }
+        public string Url { get; set; }
+        public string Kategori { get; set; }
 
-        public Podd (int nyttId, string NyttNamn)
-        {
-            Id = nyttId;
-            Namn = NyttNamn;
+        public Podd()
+        {       
         }
 
     }

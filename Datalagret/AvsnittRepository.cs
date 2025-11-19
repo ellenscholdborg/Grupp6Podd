@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Modeller;
-using Affärslagret;
 
 
 namespace Datalagret
@@ -29,11 +28,11 @@ namespace Datalagret
         }
 
         // READ – hämta en pingvin via Id
-        public Avsnitt? GetById(int id)
+        public Avsnitt? GetById(string id)
         {
             foreach (Avsnitt p in allaAvsnitt)
             {
-                if (p.Id == id)
+                if (p.Id.Equals(id)) 
                 {
                     return p;
                 }
@@ -48,7 +47,7 @@ namespace Datalagret
             {
                 if (allaAvsnitt[i].Id == uppdateratAvsnitt.Id)
                 {
-                    allaAvsnitt[i].Namn = uppdateratAvsnitt.Namn;
+                    allaAvsnitt[i].Rubrik = uppdateratAvsnitt.Rubrik;
                     return true;
                 }
             }
@@ -56,11 +55,11 @@ namespace Datalagret
         }
 
         // DELETE – baserat på Id
-        public bool Delete(int id)
+        public bool Delete(Avsnitt id)
         {
             for (int i = 0; i < allaAvsnitt.Count; i++)
             {
-                if (allaAvsnitt[i].Id == id)
+                if (allaAvsnitt[i].Id.Equals(id))
                 {
                     allaAvsnitt.RemoveAt(i);
                     return true;

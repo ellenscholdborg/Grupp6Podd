@@ -1,7 +1,5 @@
 ﻿
 using Modeller;
-using Affärslagret;
-
 
 
 namespace Datalagret
@@ -26,11 +24,11 @@ namespace Datalagret
         }
 
         // READ – hämta en pingvin via Id
-        public Podd? GetById(int id)
+        public Podd? GetById(string id)
         {
             foreach (Podd p in allaPoddar)
             {
-                if (p.Id == id)
+                if (p.Id.Equals(id))
                 {
                     return p;
                 }
@@ -53,11 +51,11 @@ namespace Datalagret
         }
 
         // DELETE – baserat på Id
-        public bool Delete(int id)
+        public bool Delete(Podd id)
         {
             for (int i = 0; i < allaPoddar.Count; i++)
             {
-                if (allaPoddar[i].Id == id)
+                if (allaPoddar[i].Id.Equals(id))
                 {
                     allaPoddar.RemoveAt(i);
                     return true;

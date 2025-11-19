@@ -32,13 +32,13 @@
             textBoxRssLank = new TextBox();
             btnHamtaAvsnitt = new Button();
             listBoxAvsnitt = new ListBox();
-            listBoxGaTillAvsnitt = new ListBox();
             listBoxOmAvsnitt = new ListBox();
             lblAvsnitt = new Label();
             lblGaTillAvsnitt = new Label();
             lblOmAvsnitt = new Label();
             comboBoxLaggTillLista = new ComboBox();
             btnMinaListor = new Button();
+            rtbGaTillAvsnitt = new RichTextBox();
             SuspendLayout();
             // 
             // lblLaggTillRss
@@ -49,7 +49,6 @@
             lblLaggTillRss.Size = new Size(134, 20);
             lblLaggTillRss.TabIndex = 0;
             lblLaggTillRss.Text = "Lägg in URL (RSS) :";
-            lblLaggTillRss.Click += label1_Click;
             // 
             // textBoxRssLank
             // 
@@ -66,22 +65,15 @@
             btnHamtaAvsnitt.TabIndex = 2;
             btnHamtaAvsnitt.Text = "Hämta avsnitt";
             btnHamtaAvsnitt.UseVisualStyleBackColor = true;
+            btnHamtaAvsnitt.Click += btnHamtaAvsnitt_Click_1;
             // 
             // listBoxAvsnitt
             // 
             listBoxAvsnitt.FormattingEnabled = true;
             listBoxAvsnitt.Location = new Point(12, 151);
             listBoxAvsnitt.Name = "listBoxAvsnitt";
-            listBoxAvsnitt.Size = new Size(187, 224);
+            listBoxAvsnitt.Size = new Size(238, 224);
             listBoxAvsnitt.TabIndex = 3;
-            // 
-            // listBoxGaTillAvsnitt
-            // 
-            listBoxGaTillAvsnitt.FormattingEnabled = true;
-            listBoxGaTillAvsnitt.Location = new Point(237, 151);
-            listBoxGaTillAvsnitt.Name = "listBoxGaTillAvsnitt";
-            listBoxGaTillAvsnitt.Size = new Size(197, 224);
-            listBoxGaTillAvsnitt.TabIndex = 4;
             // 
             // listBoxOmAvsnitt
             // 
@@ -103,7 +95,7 @@
             // lblGaTillAvsnitt
             // 
             lblGaTillAvsnitt.AutoSize = true;
-            lblGaTillAvsnitt.Location = new Point(237, 110);
+            lblGaTillAvsnitt.Location = new Point(272, 110);
             lblGaTillAvsnitt.Name = "lblGaTillAvsnitt";
             lblGaTillAvsnitt.Size = new Size(111, 20);
             lblGaTillAvsnitt.TabIndex = 7;
@@ -136,18 +128,26 @@
             btnMinaListor.Text = "Mina listor";
             btnMinaListor.UseVisualStyleBackColor = true;
             // 
+            // rtbGaTillAvsnitt
+            // 
+            rtbGaTillAvsnitt.Location = new Point(272, 151);
+            rtbGaTillAvsnitt.Name = "rtbGaTillAvsnitt";
+            rtbGaTillAvsnitt.Size = new Size(201, 224);
+            rtbGaTillAvsnitt.TabIndex = 11;
+            rtbGaTillAvsnitt.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(rtbGaTillAvsnitt);
             Controls.Add(btnMinaListor);
             Controls.Add(comboBoxLaggTillLista);
             Controls.Add(lblOmAvsnitt);
             Controls.Add(lblGaTillAvsnitt);
             Controls.Add(lblAvsnitt);
             Controls.Add(listBoxOmAvsnitt);
-            Controls.Add(listBoxGaTillAvsnitt);
             Controls.Add(listBoxAvsnitt);
             Controls.Add(btnHamtaAvsnitt);
             Controls.Add(textBoxRssLank);
@@ -164,12 +164,12 @@
         private TextBox textBoxRssLank;
         private Button btnHamtaAvsnitt;
         private ListBox listBoxAvsnitt;
-        private ListBox listBoxGaTillAvsnitt;
         private ListBox listBoxOmAvsnitt;
         private Label lblAvsnitt;
         private Label lblGaTillAvsnitt;
         private Label lblOmAvsnitt;
         private ComboBox comboBoxLaggTillLista;
         private Button btnMinaListor;
+        private RichTextBox rtbGaTillAvsnitt;
     }
 }
