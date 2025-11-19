@@ -74,6 +74,7 @@
             listBoxAvsnitt.Name = "listBoxAvsnitt";
             listBoxAvsnitt.Size = new Size(238, 224);
             listBoxAvsnitt.TabIndex = 3;
+            listBoxAvsnitt.SelectedIndexChanged += listBoxAvsnitt_SelectedIndexChanged;
             // 
             // listBoxOmAvsnitt
             // 
