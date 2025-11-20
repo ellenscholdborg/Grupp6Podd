@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Modeller
 {
     public class Kategori
     {
-        [BsonId] // anger att detta är dokumentents unika _id
+        [BsonRepresentation(BsonType.ObjectId)] 
         public string Id { get; set; }
 
         [BsonElement("Namn")]

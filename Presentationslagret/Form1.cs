@@ -1,6 +1,8 @@
 using System.Security.Policy;
 using Modeller;
 using Affärslagret;
+using Datalagret;
+using MongoDB.Driver;
 
 namespace Presentationslagret
 {
@@ -8,10 +10,12 @@ namespace Presentationslagret
     {
         private PoddService enPoddService;
         private List<Avsnitt> allaAvsnitt;
+        private MongoDBService mongo;
 
         public Form1(PoddService enPoddService)
         {
             this.enPoddService = enPoddService;
+            mongo = new MongoDBService();
             InitializeComponent();
         }
 
@@ -38,23 +42,23 @@ namespace Presentationslagret
         }
         private void listBoxAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            richTextBox1.Clear();
+            rtbOmAvsnitt.Clear();
             rtbGaTillAvsnitt.Clear();
 
             if (listBoxAvsnitt.SelectedItem is Avsnitt valtAvsnitt)
             {
-                richTextBox1.AppendText($"Titel: {valtAvsnitt.Rubrik}");
+                rtbOmAvsnitt.AppendText($"Titel: {valtAvsnitt.Rubrik}");
 
-                richTextBox1.AppendText($"Publicerad: {valtAvsnitt.Publiceringsdatum.DateTime.ToShortDateString()}");
+                rtbOmAvsnitt.AppendText($"Publicerad: {valtAvsnitt.Publiceringsdatum.DateTime.ToShortDateString()}");
 
-                richTextBox1.AppendText("---------------------------------");
+                rtbOmAvsnitt.AppendText("---------------------------------");
 
                 if (!string.IsNullOrWhiteSpace(valtAvsnitt.Sammanfattning))
                 {
                     string kortSammanfattning = valtAvsnitt.Sammanfattning.Length > 150
                                               ? valtAvsnitt.Sammanfattning.Substring(0, 150) + "..."
                                               : valtAvsnitt.Sammanfattning;
-                    richTextBox1.AppendText($"Sammanfattning: {kortSammanfattning}");
+                    rtbOmAvsnitt.AppendText($"Sammanfattning: {kortSammanfattning}");
                 }
                 if (!string.IsNullOrWhiteSpace(valtAvsnitt.Beskrivning))
                 {
@@ -62,7 +66,7 @@ namespace Presentationslagret
                                            ? valtAvsnitt.Beskrivning.Substring(0, 150) + "..."
                                            : valtAvsnitt.Beskrivning;
 
-                    richTextBox1.AppendText($"Beskrivning (start): {kortBeskrivning}");
+                    rtbOmAvsnitt.AppendText($"Beskrivning (start): {kortBeskrivning}");
                 }
                 if (!string.IsNullOrWhiteSpace(valtAvsnitt.Lank))
                 {
@@ -75,14 +79,72 @@ namespace Presentationslagret
             }
             else
             {
-                richTextBox1.Clear();
+                rtbOmAvsnitt.Clear();
                 rtbGaTillAvsnitt.Clear();
             }
         }
 
-        
+        private void listBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTaBortKategori_Click(object sender, EventArgs e)
+        {
+            if (listBoxKategori.SelectedItem == null)
+            {
+                MessageBox.Show("Välj en kategori att ta bort.");
+                return;
+            }
+
+            string kategori = listBoxKategori.SelectedItem.ToString();
+
+            DialogResult resultat = MessageBox.Show(
+                $"Är du säker på att du vill ta bort kategorin '{kategori}'?",
+                "Bekräfta borttagning",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (resultat == DialogResult.Yes)
+            {
+                listBoxKategori.Items.Remove(kategori);
+                MessageBox.Show($"Kategorin '{kategori}' har tagits bort.");
+            }
+        }
+
+        private void btnLaggTillNyKategori_Click(object sender, EventArgs e)
+        {
+            string nyKategori = textBoxAngeNyKategori.Text.Trim();
+
+            if (string.IsNullOrEmpty(nyKategori))
+            {
+                MessageBox.Show("Skriv in ett kategorinamn först.");
+                return;
+            }
+
+            listBoxKategori.Items.Add(nyKategori);
+
+            mongo.SparaKategori(nyKategori);
+
+            textBoxAngeNyKategori.Text = "";
+
+            MessageBox.Show($"Kategorin '{nyKategori}' har lagts till!");
+        }
+
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+            var allaKategorier = await mongo.HamtaAllaKategorierAsync();
+            listBoxKategori.Items.Clear();
+            foreach (var kategori in allaKategorier)
+            {
+                listBoxKategori.Items.Add(kategori.Namn);
+            }
+        }
     }
 }
+
+
 
     
            

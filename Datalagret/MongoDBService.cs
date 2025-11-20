@@ -8,17 +8,28 @@ using Modeller;
 
 namespace Datalagret
 {
-    internal class MongoDBService
+    public class MongoDBService
     {
-        private readonly IMongoCollection<Podd> poddKollektion;
+        private readonly IMongoCollection<Kategori> kategoriKollektion;
 
-        // Uppkoppling mot klustret, databasen och kollektionen
+        
         public MongoDBService()
         {
 
-            var klient = new MongoClient("mongodb+srv://ellish100_db_user:<orebroUniversitet1>@poddprojektgrupp6.jnfv6bw.mongodb.net/?appName=PoddProjektGrupp6");
+            var klient = new MongoClient("mongodb+srv://ellish100_db_user:PoddGrupp6@poddprojektgrupp6.jnfv6bw.mongodb.net/?retryWrites=true&w=majority&appName=PoddProjektGrupp6");
             var databas = klient.GetDatabase("PoddProjektGrupp6");
-            poddKollektion = databas.GetCollection<Podd>("Poddar");
+            kategoriKollektion = databas.GetCollection<Kategori>("Kategorier");
         }
+        public void SparaKategori(string namn)
+        {
+            var kategori = new Kategori { Namn = namn };
+            kategoriKollektion.InsertOne(kategori);
+        }
+        public async Task<List<Kategori>> HamtaAllaKategorierAsync()
+        {
+            var kategorier = await kategoriKollektion.Find(_ => true).ToListAsync();
+            return kategorier;
+        }
+
     }
 }
