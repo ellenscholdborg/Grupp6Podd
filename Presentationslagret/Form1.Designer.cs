@@ -287,6 +287,7 @@ namespace Presentationslagret
             richTextBoxLankTillPoddflode.Size = new Size(288, 379);
             richTextBoxLankTillPoddflode.TabIndex = 24;
             richTextBoxLankTillPoddflode.Text = "";
+            richTextBoxLankTillPoddflode.TextChanged += richTextBoxLankTillPoddflode_TextChanged;
             // 
             // lblLankTillPoddflode
             // 

@@ -90,14 +90,14 @@ namespace Presentationslagret
 
         private async void listBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //listBoxAllaPoddfloden.Items.Clear();
+           
 
             if (listBoxKategori.SelectedItem == null)
                 return;
 
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
             textBoxAndraNamnKategori.Text = valdKategori.Namn;
-           // List<Podd>
+            
             var poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
 
             allaPoddarBinding = new BindingList<Podd>(poddar);
@@ -106,12 +106,7 @@ namespace Presentationslagret
 
             textBoxAndraNamnKategori.Text = valdKategori.Namn;
 
-            //foreach (var podd in poddar.Where(p => p != null))
-            //{
-            //    //string namn = string.IsNullOrWhiteSpace(podd.Namn) ? "(namn saknas)" : podd.Namn;
-            //    listBoxAllaPoddfloden.Items.Add(podd);
-            //    listBoxAllaPoddfloden.DisplayMember = "Namn";
-            //}
+          
 
         }
 
@@ -190,7 +185,6 @@ namespace Presentationslagret
 
             listBoxAllaPoddfloden.DisplayMember = "Namn";
 
-            // Give combobox its own BindingContext so selection does not change listBoxKategori's current position
             comboBoxBytKategori.BindingContext = new BindingContext();
             comboBoxBytKategori.DisplayMember = "Namn";
             comboBoxBytKategori.ValueMember = "Id";
@@ -215,10 +209,8 @@ namespace Presentationslagret
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
             string rss = textBoxRssLank.Text.Trim();
 
-            // Hämta poddens titel
             string poddNamn = await enPoddService.HamtaPoddTitel(rss);
 
-            // Om ingen titel hittades → använd URL som fallback
             if (string.IsNullOrEmpty(poddNamn))
                 poddNamn = rss;
 
@@ -231,7 +223,6 @@ namespace Presentationslagret
 
             await mongo.SparaPoddAsync(nyPodd);
 
-            // Lägg till i UI: om listan är databunden, lägg till i BindingList annars i Items
             if (allaPoddarBinding != null && listBoxAllaPoddfloden.DataSource == allaPoddarBinding)
             {
                 allaPoddarBinding.Add(nyPodd);
@@ -272,7 +263,6 @@ namespace Presentationslagret
                     if (lyckades)
 
                     {
-                        // If the listbox is bound to a BindingList, remove from that list so the UI updates
                         if (allaPoddarBinding != null && listBoxAllaPoddfloden.DataSource == allaPoddarBinding)
                         {
                             allaPoddarBinding.Remove(podd);
@@ -374,6 +364,11 @@ namespace Presentationslagret
 
             var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
 
+            if (!string.IsNullOrWhiteSpace(valdPodd.Url))
+                richTextBoxLankTillPoddflode.Text = valdPodd.Url;
+            else
+                richTextBoxLankTillPoddflode.Text = "Ingen länk finns för detta poddflöde.";
+
             textBoxAngeNyttNamnPodd.Text = valdPodd.Namn;
 
         }
@@ -381,7 +376,7 @@ namespace Presentationslagret
         private async void comboBoxBytKategori_SelectedIndexChanged(object sender, EventArgs e)
 
         {
-            
+
 
 
 
@@ -395,25 +390,21 @@ namespace Presentationslagret
                 return;
             }
 
-            // Kontroll: måste välja en ny kategori
             if (comboBoxBytKategori.SelectedItem == null)
             {
                 MessageBox.Show("Välj en kategori i comboboxen.");
                 return;
             }
 
-            // Hämta vald podd och ny kategori
             var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
             var nyKategori = (Kategori)comboBoxBytKategori.SelectedItem;
 
-            // Om kategorin inte ändras: gör inget
             if (valdPodd.KategoriId == nyKategori.Id)
             {
                 MessageBox.Show("Poddflödet tillhör redan denna kategori.");
                 return;
             }
 
-            // Uppdatera i MongoDB
             bool lyckades = await mongo.UppdateraPoddKategoriAsync(valdPodd.Id, nyKategori.Id);
 
             if (!lyckades)
@@ -422,10 +413,8 @@ namespace Presentationslagret
                 return;
             }
 
-            // Uppdatera objektet i minnet
             valdPodd.KategoriId = nyKategori.Id;
 
-            // Ta bort podden ur lokalen listboxen
             if (allaPoddarBinding != null && allaPoddarBinding.Contains(valdPodd))
             {
 
@@ -434,14 +423,18 @@ namespace Presentationslagret
             else
             {
                 listBoxAllaPoddfloden.Items.Remove(valdPodd);
-    
+
             }
 
             MessageBox.Show($"Poddflödet '{valdPodd.Namn}' har bytt kategori till '{nyKategori.Namn}'.");
         }
 
+        private void richTextBoxLankTillPoddflode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
-    }
+}
 
 
 

@@ -6,7 +6,7 @@ namespace Modeller
     public class Podd
     {
 
-        [BsonId] // anger att detta är dokumentents unika _id
+        [BsonId] 
         public string Id { get; set; }
 
         [BsonElement("Namn")]
