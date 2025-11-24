@@ -190,14 +190,11 @@ namespace Presentationslagret
 
             listBoxAllaPoddfloden.DisplayMember = "Namn";
 
-            // Bind combobox to a separate copy of the categories so selecting in combobox
-            // does not change the current position (selection) of listBoxKategori.
-            var comboKategorier = new BindingList<Kategori>(allaKategorier.ToList());
+            // Give combobox its own BindingContext so selection does not change listBoxKategori's current position
+            comboBoxBytKategori.BindingContext = new BindingContext();
             comboBoxBytKategori.DisplayMember = "Namn";
             comboBoxBytKategori.ValueMember = "Id";
             comboBoxBytKategori.DataSource = allaKategorierBinding;
-
-
 
         }
 
