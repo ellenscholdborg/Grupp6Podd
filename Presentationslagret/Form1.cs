@@ -4,6 +4,7 @@ using Modeller;
 using MongoDB.Driver;
 using System.ComponentModel;
 using System.Security.Policy;
+using System.Linq;
 
 namespace Presentationslagret
 {
@@ -189,6 +190,9 @@ namespace Presentationslagret
 
             listBoxAllaPoddfloden.DisplayMember = "Namn";
 
+            // Bind combobox to a separate copy of the categories so selecting in combobox
+            // does not change the current position (selection) of listBoxKategori.
+            var comboKategorier = new BindingList<Kategori>(allaKategorier.ToList());
             comboBoxBytKategori.DisplayMember = "Namn";
             comboBoxBytKategori.ValueMember = "Id";
             comboBoxBytKategori.DataSource = allaKategorierBinding;
@@ -230,7 +234,16 @@ namespace Presentationslagret
 
             await mongo.SparaPoddAsync(nyPodd);
 
-            listBoxAllaPoddfloden.Items.Add(nyPodd);
+            // Lägg till i UI: om listan är databunden, lägg till i BindingList annars i Items
+            if (allaPoddarBinding != null && listBoxAllaPoddfloden.DataSource == allaPoddarBinding)
+            {
+                allaPoddarBinding.Add(nyPodd);
+            }
+            else
+            {
+                listBoxAllaPoddfloden.Items.Add(nyPodd);
+            }
+
             textBoxRssLank.Text = "";
 
             MessageBox.Show("Podd tillagd!");
@@ -262,7 +275,16 @@ namespace Presentationslagret
                     if (lyckades)
 
                     {
-                        listBoxAllaPoddfloden.Items.Remove(podd);
+                        // If the listbox is bound to a BindingList, remove from that list so the UI updates
+                        if (allaPoddarBinding != null && listBoxAllaPoddfloden.DataSource == allaPoddarBinding)
+                        {
+                            allaPoddarBinding.Remove(podd);
+                        }
+                        else
+                        {
+                            listBoxAllaPoddfloden.Items.Remove(podd);
+                        }
+
                         MessageBox.Show($"Poddflödet '{podd.Namn}' har tagits bort.");
                     }
                     else
@@ -407,8 +429,16 @@ namespace Presentationslagret
             valdPodd.KategoriId = nyKategori.Id;
 
             // Ta bort podden ur lokalen listboxen
-            
-            allaPoddarBinding.Remove(valdPodd);
+            if (allaPoddarBinding != null && allaPoddarBinding.Contains(valdPodd))
+            {
+
+                allaPoddarBinding.Remove(valdPodd);
+            }
+            else
+            {
+                listBoxAllaPoddfloden.Items.Remove(valdPodd);
+    
+            }
 
             MessageBox.Show($"Poddflödet '{valdPodd.Namn}' har bytt kategori till '{nyKategori.Namn}'.");
         }
