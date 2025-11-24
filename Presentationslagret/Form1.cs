@@ -89,20 +89,29 @@ namespace Presentationslagret
 
         private async void listBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listBoxAllaPoddfloden.Items.Clear();
+            //listBoxAllaPoddfloden.Items.Clear();
 
             if (listBoxKategori.SelectedItem == null)
                 return;
 
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
             textBoxAndraNamnKategori.Text = valdKategori.Namn;
-            List<Podd> poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
+           // List<Podd>
+            var poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
 
-            foreach (var podd in poddar.Where(p => p != null))
-            {
-                string namn = string.IsNullOrWhiteSpace(podd.Namn) ? "(namn saknas)" : podd.Namn;
-                listBoxAllaPoddfloden.Items.Add(namn);
-            }
+            allaPoddarBinding = new BindingList<Podd>(poddar);
+            listBoxAllaPoddfloden.DataSource = allaPoddarBinding;
+            listBoxAllaPoddfloden.DisplayMember = "Namn";
+
+            textBoxAndraNamnKategori.Text = valdKategori.Namn;
+
+            //foreach (var podd in poddar.Where(p => p != null))
+            //{
+            //    //string namn = string.IsNullOrWhiteSpace(podd.Namn) ? "(namn saknas)" : podd.Namn;
+            //    listBoxAllaPoddfloden.Items.Add(podd);
+            //    listBoxAllaPoddfloden.DisplayMember = "Namn";
+            //}
+
         }
 
         private async void btnTaBortKategori_Click(object sender, EventArgs e)
@@ -177,7 +186,14 @@ namespace Presentationslagret
             listBoxKategori.DisplayMember = "Namn";
             listBoxKategori.ValueMember = "Id";
             listBoxKategori.DataSource = allaKategorierBinding;
+
             listBoxAllaPoddfloden.DisplayMember = "Namn";
+
+            comboBoxBytKategori.DisplayMember = "Namn";
+            comboBoxBytKategori.ValueMember = "Id";
+            comboBoxBytKategori.DataSource = allaKategorierBinding;
+
+
 
         }
 
@@ -295,9 +311,112 @@ namespace Presentationslagret
                 MessageBox.Show("Kategorin kunde inte uppdateras i databasen.");
             }
         }
+
+        private async void btnSparaNyttNamn_Click(object sender, EventArgs e)
+        {
+            if (listBoxAllaPoddfloden.SelectedItem == null)
+            {
+                MessageBox.Show("Välj ett poddflöde att byta namn på.");
+                return;
+            }
+
+            string nyttNamn = textBoxAngeNyttNamnPodd.Text.Trim();
+            if (string.IsNullOrWhiteSpace(nyttNamn))
+            {
+                MessageBox.Show("Skriv in ett nytt poddnamn.");
+                return;
+            }
+
+            var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
+
+            bool lyckades = await mongo.UppdateraPoddflodeNamnAsync(valdPodd.Id, nyttNamn);
+
+            if (lyckades)
+            {
+                valdPodd.Namn = nyttNamn;
+
+                listBoxAllaPoddfloden.DisplayMember = "";
+                listBoxAllaPoddfloden.DisplayMember = "Namn";
+
+                MessageBox.Show("Poddnamnet har uppdaterats!");
+            }
+            else
+            {
+                MessageBox.Show("Poddnamnet kunde inte uppdateras i databasen.");
+            }
+
+        }
+
+        private void listBoxAllaPoddfloden_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxAllaPoddfloden.SelectedItem == null)
+
+                return;
+
+            var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
+
+            textBoxAngeNyttNamnPodd.Text = valdPodd.Namn;
+
+        }
+
+        private async void comboBoxBytKategori_SelectedIndexChanged(object sender, EventArgs e)
+
+        {
+            
+
+
+
+        }
+
+        private async void btnSparaBytKategori_Click(object sender, EventArgs e)
+        {
+            if (listBoxAllaPoddfloden.SelectedItem == null)
+            {
+                MessageBox.Show("Välj ett poddflöde först.");
+                return;
+            }
+
+            // Kontroll: måste välja en ny kategori
+            if (comboBoxBytKategori.SelectedItem == null)
+            {
+                MessageBox.Show("Välj en kategori i comboboxen.");
+                return;
+            }
+
+            // Hämta vald podd och ny kategori
+            var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
+            var nyKategori = (Kategori)comboBoxBytKategori.SelectedItem;
+
+            // Om kategorin inte ändras: gör inget
+            if (valdPodd.KategoriId == nyKategori.Id)
+            {
+                MessageBox.Show("Poddflödet tillhör redan denna kategori.");
+                return;
+            }
+
+            // Uppdatera i MongoDB
+            bool lyckades = await mongo.UppdateraPoddKategoriAsync(valdPodd.Id, nyKategori.Id);
+
+            if (!lyckades)
+            {
+                MessageBox.Show("Kunde inte uppdatera kategorin i databasen.");
+                return;
+            }
+
+            // Uppdatera objektet i minnet
+            valdPodd.KategoriId = nyKategori.Id;
+
+            // Ta bort podden ur lokalen listboxen
+            
+            allaPoddarBinding.Remove(valdPodd);
+
+            MessageBox.Show($"Poddflödet '{valdPodd.Namn}' har bytt kategori till '{nyKategori.Namn}'.");
+        }
+
+    }
     }
 
-}
+
 
 
 

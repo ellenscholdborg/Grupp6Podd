@@ -69,5 +69,24 @@ namespace Datalagret
             return resultat.ModifiedCount > 0;
         }
 
+        public async Task<bool> UppdateraPoddflodeNamnAsync(string poddId, string nyttNamn)
+        {
+            var filter = Builders<Podd>.Filter.Eq(p => p.Id, poddId);
+            var update = Builders<Podd>.Update.Set(p => p.Namn, nyttNamn);
+
+            var resultat = await poddKollektion.UpdateOneAsync(filter, update);
+            return resultat.ModifiedCount > 0;
+        }
+
+        public async Task<bool> UppdateraPoddKategoriAsync(string poddId, string nyKategoriId)
+        {
+            var filter = Builders<Podd>.Filter.Eq(p => p.Id, poddId);
+            var update = Builders<Podd>.Update.Set(p => p.KategoriId, nyKategoriId);
+
+            var result = await poddKollektion.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
     }
 }
