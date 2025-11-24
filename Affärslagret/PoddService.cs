@@ -1,10 +1,12 @@
-﻿using Modeller;
+﻿using Datalagret;
+using Modeller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
-using Datalagret;
+using System.Xml;
 
 namespace Affärslagret
 {
@@ -30,7 +32,20 @@ namespace Affärslagret
 
             return ettAvsnitt;
         }
+        public async Task<string> HamtaPoddTitel(string rssUrl)
+        {
+            try
+            {
+                var reader = XmlReader.Create(rssUrl);
+                var feed = SyndicationFeed.Load(reader);
 
+                return feed.Title?.Text ?? null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
 
     }

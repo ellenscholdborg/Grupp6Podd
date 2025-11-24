@@ -188,6 +188,7 @@ namespace Presentationslagret
             btnLaggTillKategori.TabIndex = 16;
             btnLaggTillKategori.Text = "Lägg till i kategori";
             btnLaggTillKategori.UseVisualStyleBackColor = true;
+            btnLaggTillKategori.Click += btnLaggTillKategori_Click;
             // 
             // lblAllaPoddfloden
             // 

@@ -1,8 +1,9 @@
-using System.Security.Policy;
-using Modeller;
-using Aff‰rslagret;
+Ôªøusing Aff√§rslagret;
 using Datalagret;
+using Modeller;
 using MongoDB.Driver;
+using System.ComponentModel;
+using System.Security.Policy;
 
 namespace Presentationslagret
 {
@@ -11,6 +12,7 @@ namespace Presentationslagret
         private PoddService enPoddService;
         private List<Avsnitt> allaAvsnitt;
         private MongoDBService mongo;
+        private BindingList<Kategori> allaKategorierBinding;
 
         public Form1(PoddService enPoddService)
         {
@@ -24,11 +26,11 @@ namespace Presentationslagret
         {
             try
             {
-                var k‰lla = new Podd();
-                k‰lla.Id = Guid.NewGuid().ToString();
-                k‰lla.Url = textBoxRssLank.Text;
+                var k√§lla = new Podd();
+                k√§lla.Id = Guid.NewGuid().ToString();
+                k√§lla.Url = textBoxRssLank.Text;
 
-                allaAvsnitt = await enPoddService.LasInAllaAvsnitt(k‰lla);
+                allaAvsnitt = await enPoddService.LasInAllaAvsnitt(k√§lla);
 
                 listBoxAvsnitt.DataSource = null;
                 listBoxAvsnitt.DisplayMember = "Rubrik";
@@ -37,7 +39,7 @@ namespace Presentationslagret
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Kunde inte h‰mta avsnitt: " + ex.Message);
+                MessageBox.Show("Kunde inte h√§mta avsnitt: " + ex.Message);
             }
         }
         private void listBoxAvsnitt_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,7 +76,7 @@ namespace Presentationslagret
                 }
                 else
                 {
-                    rtbGaTillAvsnitt.Text = "L‰nk saknas fˆr detta avsnitt.";
+                    rtbGaTillAvsnitt.Text = "L√§nk saknas f√∂r detta avsnitt.";
                 }
             }
             else
@@ -84,64 +86,140 @@ namespace Presentationslagret
             }
         }
 
-        private void listBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listBoxKategori_SelectedIndexChanged(object sender, EventArgs e)
         {
+            listBoxAllaPoddfloden.Items.Clear();
 
+            if (listBoxKategori.SelectedItem == null)
+                return;
+
+            var valdKategori = (Kategori)listBoxKategori.SelectedItem;
+            List<Podd> poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
+
+            foreach (var podd in poddar.Where(p => p != null))
+            {
+                string namn = string.IsNullOrWhiteSpace(podd.Namn)
+                    ? "(namn saknas)"
+                    : podd.Namn;
+                listBoxAllaPoddfloden.Items.Add(namn);
+            }
         }
 
-        private void btnTaBortKategori_Click(object sender, EventArgs e)
+        private async void btnTaBortKategori_Click(object sender, EventArgs e)
         {
             if (listBoxKategori.SelectedItem == null)
             {
-                MessageBox.Show("V‰lj en kategori att ta bort.");
+                MessageBox.Show("V√§lj en kategori att ta bort.");
                 return;
             }
 
-            string kategori = listBoxKategori.SelectedItem.ToString();
+            var kategori = (Kategori)listBoxKategori.SelectedItem;
 
             DialogResult resultat = MessageBox.Show(
-                $"ƒr du s‰ker pÂ att du vill ta bort kategorin '{kategori}'?",
-                "Bekr‰fta borttagning",
+                $"√Ñr du s√§ker p√• att du vill ta bort kategorin '{kategori.Namn}'?",
+                "Bekr√§fta borttagning",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
             );
 
             if (resultat == DialogResult.Yes)
             {
-                listBoxKategori.Items.Remove(kategori);
-                MessageBox.Show($"Kategorin '{kategori}' har tagits bort.");
+                try
+                {
+                    bool lyckades = await mongo.TaBortKategoriAsync(kategori.Id);
+
+                    if (lyckades)
+
+                    {
+                        allaKategorierBinding.Remove(kategori);
+                        MessageBox.Show($"Kategorin '{kategori.Namn}' har tagits bort.");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Kunde inte hitta kategorin '{kategori.Namn}' i databasen.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ett fel uppstod vid borttagning: {ex.Message}");
+                }
             }
         }
 
-        private void btnLaggTillNyKategori_Click(object sender, EventArgs e)
-        {
-            string nyKategori = textBoxAngeNyKategori.Text.Trim();
 
-            if (string.IsNullOrEmpty(nyKategori))
+        private async void btnLaggTillNyKategori_Click(object sender, EventArgs e)
+        {
+            string nyKategoriNamn = textBoxAngeNyKategori.Text.Trim();
+
+            if (string.IsNullOrEmpty(nyKategoriNamn))
             {
-                MessageBox.Show("Skriv in ett kategorinamn fˆrst.");
+                MessageBox.Show("Skriv in ett kategorinamn f√∂rst.");
                 return;
             }
 
-            listBoxKategori.Items.Add(nyKategori);
+            var nyKategori = new Kategori { Namn = nyKategoriNamn };
 
-            mongo.SparaKategori(nyKategori);
+            await mongo.SparaKategori(nyKategori);
+
+            allaKategorierBinding.Add(nyKategori);
 
             textBoxAngeNyKategori.Text = "";
 
-            MessageBox.Show($"Kategorin '{nyKategori}' har lagts till!");
+            MessageBox.Show($"Kategorin '{nyKategoriNamn}' har lagts till!");
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
             var allaKategorier = await mongo.HamtaAllaKategorierAsync();
-            listBoxKategori.Items.Clear();
-            foreach (var kategori in allaKategorier)
+            allaKategorierBinding = new BindingList<Kategori>(allaKategorier);
+
+            listBoxKategori.DisplayMember = "Namn";
+            listBoxKategori.ValueMember = "Id";
+            listBoxKategori.DataSource = allaKategorierBinding;
+
+        }
+
+        private async void btnLaggTillKategori_Click(object sender, EventArgs e)
+        {
+            if (listBoxKategori.SelectedItem == null)
             {
-                listBoxKategori.Items.Add(kategori.Namn);
+                MessageBox.Show("V√§lj en kategori f√∂rst.");
+                return;
             }
+
+            if (string.IsNullOrWhiteSpace(textBoxRssLank.Text))
+            {
+                MessageBox.Show("Skriv in en RSS-l√§nk.");
+                return;
+            }
+
+            var valdKategori = (Kategori)listBoxKategori.SelectedItem;
+            string rss = textBoxRssLank.Text.Trim();
+
+            // H√§mta poddens titel
+            string poddNamn = await enPoddService.HamtaPoddTitel(rss);
+
+            // Om ingen titel hittades ‚Üí anv√§nd URL som fallback
+            if (string.IsNullOrEmpty(poddNamn))
+                poddNamn = rss;
+
+            var nyPodd = new Podd
+            {
+                Namn = poddNamn,
+                Url = rss,
+                KategoriId = valdKategori.Id
+            };
+
+            await mongo.SparaPoddAsync(nyPodd);
+
+            listBoxAllaPoddfloden.Items.Add(nyPodd.Namn);
+            textBoxRssLank.Text = "";
+
+            MessageBox.Show("Podd tillagd!");
         }
     }
+    
 }
 
 

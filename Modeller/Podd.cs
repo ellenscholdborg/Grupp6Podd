@@ -12,7 +12,7 @@ namespace Modeller
         [BsonElement("Namn")]
         public string Namn { get; set; }
         public string Url { get; set; }
-        public string Kategori { get; set; }
+        public string KategoriId { get; set; }
 
         public Podd()
         {       
