@@ -13,6 +13,7 @@ namespace Presentationslagret
         private List<Avsnitt> allaAvsnitt;
         private MongoDBService mongo;
         private BindingList<Kategori> allaKategorierBinding;
+        private BindingList<Podd> allaPoddarBinding;
 
         public Form1(PoddService enPoddService)
         {
@@ -94,13 +95,12 @@ namespace Presentationslagret
                 return;
 
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
+            textBoxAndraNamnKategori.Text = valdKategori.Namn;
             List<Podd> poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
 
             foreach (var podd in poddar.Where(p => p != null))
             {
-                string namn = string.IsNullOrWhiteSpace(podd.Namn)
-                    ? "(namn saknas)"
-                    : podd.Namn;
+                string namn = string.IsNullOrWhiteSpace(podd.Namn) ? "(namn saknas)" : podd.Namn;
                 listBoxAllaPoddfloden.Items.Add(namn);
             }
         }
@@ -177,6 +177,7 @@ namespace Presentationslagret
             listBoxKategori.DisplayMember = "Namn";
             listBoxKategori.ValueMember = "Id";
             listBoxKategori.DataSource = allaKategorierBinding;
+            listBoxAllaPoddfloden.DisplayMember = "Namn";
 
         }
 
@@ -213,13 +214,89 @@ namespace Presentationslagret
 
             await mongo.SparaPoddAsync(nyPodd);
 
-            listBoxAllaPoddfloden.Items.Add(nyPodd.Namn);
+            listBoxAllaPoddfloden.Items.Add(nyPodd);
             textBoxRssLank.Text = "";
 
             MessageBox.Show("Podd tillagd!");
         }
+
+        private async void btnTaBortPoddflode_Click(object sender, EventArgs e)
+        {
+            if (listBoxAllaPoddfloden.SelectedItem == null)
+            {
+                MessageBox.Show("Välj ett poddflöde att ta bort.");
+                return;
+            }
+
+            var podd = (Podd)listBoxAllaPoddfloden.SelectedItem;
+
+            DialogResult resultat = MessageBox.Show(
+                $"Är du säker på att du vill ta bort poddflödet '{podd.Namn}'?",
+                "Bekräfta borttagning",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (resultat == DialogResult.Yes)
+            {
+                try
+                {
+                    bool lyckades = await mongo.TaBortPoddflodeAsync(podd.Id);
+
+                    if (lyckades)
+
+                    {
+                        listBoxAllaPoddfloden.Items.Remove(podd);
+                        MessageBox.Show($"Poddflödet '{podd.Namn}' har tagits bort.");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Kunde inte hitta poddflödet '{podd.Namn}' i databasen.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ett fel uppstod vid borttagning: {ex.Message}");
+                }
+            }
+        }
+
+        private async void btnSparaNyKategori_Click(object sender, EventArgs e)
+        {
+            if (listBoxKategori.SelectedItem == null)
+            {
+                MessageBox.Show("Välj en kategori att byta namn på.");
+                return;
+            }
+
+            string nyttNamn = textBoxAndraNamnKategori.Text.Trim();
+            if (string.IsNullOrWhiteSpace(nyttNamn))
+            {
+                MessageBox.Show("Skriv in ett nytt kategorinamn.");
+                return;
+            }
+
+            var valdKategori = (Kategori)listBoxKategori.SelectedItem;
+
+            bool lyckades = await mongo.UppdateraKategoriNamnAsync(valdKategori.Id, nyttNamn);
+
+            if (lyckades)
+            {
+                valdKategori.Namn = nyttNamn;
+
+                listBoxKategori.DisplayMember = "";
+                listBoxKategori.DisplayMember = "Namn";
+
+                MessageBox.Show("Kategorinamnet har uppdaterats!");
+            }
+            else
+            {
+                MessageBox.Show("Kategorin kunde inte uppdateras i databasen.");
+            }
+        }
     }
-    
+
 }
 
 

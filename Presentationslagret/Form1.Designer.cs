@@ -179,6 +179,7 @@ namespace Presentationslagret
             btnSparaNyKategori.TabIndex = 15;
             btnSparaNyKategori.Text = "Spara";
             btnSparaNyKategori.UseVisualStyleBackColor = true;
+            btnSparaNyKategori.Click += btnSparaNyKategori_Click;
             // 
             // btnLaggTillKategori
             // 
@@ -215,6 +216,7 @@ namespace Presentationslagret
             btnTaBortPoddflode.TabIndex = 19;
             btnTaBortPoddflode.Text = "Ta bort poddflöde";
             btnTaBortPoddflode.UseVisualStyleBackColor = true;
+            btnTaBortPoddflode.Click += btnTaBortPoddflode_Click;
             // 
             // btnSparaNyttNamn
             // 

@@ -54,5 +54,20 @@ namespace Datalagret
             return await poddKollektion.Find(p => p.KategoriId == kategoriId).ToListAsync();
         }
 
+        public async Task<bool> TaBortPoddflodeAsync(string id)
+        {
+            var filter = Builders<Podd>.Filter.Eq(k => k.Id, id);
+            var resultat = await poddKollektion.DeleteOneAsync(filter);
+            return resultat.DeletedCount > 0;
+        }
+        public async Task<bool> UppdateraKategoriNamnAsync(string kategoriId, string nyttNamn)
+        {
+            var filter = Builders<Kategori>.Filter.Eq(k => k.Id, kategoriId);
+            var update = Builders<Kategori>.Update.Set(k => k.Namn, nyttNamn);
+
+            var resultat = await kategoriKollektion.UpdateOneAsync(filter, update);
+            return resultat.ModifiedCount > 0;
+        }
+
     }
 }
