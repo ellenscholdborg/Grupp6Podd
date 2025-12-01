@@ -1,73 +1,50 @@
-﻿using System;
+﻿using Modeller;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Modeller;
 
 
 namespace Datalagret
 {
-    internal class KategoriRepository : IRepository<Kategori>
+    public class KategoriRepository : IKategoriRepository
     {
-        private List<Kategori> allaKategorier;
+        private readonly IMongoCollection<Kategori> kategoriKollektion;
 
-        public KategoriRepository()
+        public KategoriRepository(IMongoDatabase databas)
         {
-            allaKategorier = new List<Kategori>();
-        }
-        public void Add(Kategori enKategori)
-        {
-            allaKategorier.Add(enKategori);
+            kategoriKollektion = databas.GetCollection<Kategori>("Kategorier");
         }
 
-        // READ – hämta alla
-        public List<Kategori> GetAll()
+        public async Task SparaKategoriAsync(Kategori kategori)
         {
-            return allaKategorier;
+            if (string.IsNullOrEmpty(kategori.Id))
+                kategori.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+
+            await kategoriKollektion.InsertOneAsync(kategori);
         }
 
-        // READ – hämta en pingvin via Id
-        public Kategori? GetById(string id)
+        public async Task<List<Kategori>> HamtaAllaKategorierAsync()
         {
-            foreach (Kategori p in allaKategorier)
-            {
-                if (p.Id.Equals(id))
-                {
-                    return p;
-                }
-            }
-            return null;
+            return await kategoriKollektion.Find(_ => true).ToListAsync();
         }
 
-        // UPDATE – baserat på Id
-        public bool Update(Kategori uppdateradKategori)
+        public async Task<bool> TaBortKategoriAsync(Kategori kategori)
         {
-            for (int i = 0; i < allaKategorier.Count; i++)
-            {
-                if (allaKategorier[i].Id == uppdateradKategori.Id)
-                {
-                    allaKategorier[i].Namn = uppdateradKategori.Namn;
-                    return true;
-                }
-            }
-            return false;
+            var filter = Builders<Kategori>.Filter.Eq(k => k.Id, kategori.Id);
+            var resultat = await kategoriKollektion.DeleteOneAsync(filter);
+            return resultat.DeletedCount > 0;
         }
 
-        // DELETE – baserat på Id
-        public bool Delete(Kategori id)
+        public async Task<bool> UppdateraKategoriNamnAsync(Kategori kategori, string nyttNamn)
         {
-            for (int i = 0; i < allaKategorier.Count; i++)
-            {
-                if (allaKategorier[i].Id.Equals(id))
-                {
-                    allaKategorier.RemoveAt(i);
-                    return true;
-                }
-            }
-            return false;
+            var filter = Builders<Kategori>.Filter.Eq(k => k.Id, kategori.Id);
+            var update = Builders<Kategori>.Update.Set(k => k.Namn, nyttNamn);
+            var resultat = await kategoriKollektion.UpdateOneAsync(filter, update);
+            return resultat.ModifiedCount > 0;
         }
-
     }
 }
 

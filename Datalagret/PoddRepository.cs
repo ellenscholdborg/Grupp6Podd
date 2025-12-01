@@ -1,69 +1,55 @@
 ﻿
 using Modeller;
-
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Datalagret
 {
-    public class PoddRepository : IRepository<Podd>
+    public class PoddRepository : IPoddRepository
     {
-        private List<Podd> allaPoddar;
+        private readonly IMongoCollection<Podd> poddKollektion;
 
-        public PoddRepository()
+        public PoddRepository(IMongoDatabase databas)
         {
-            allaPoddar = new List<Podd>();
-        }
-        public void Add(Podd enPodd)
-        {
-            allaPoddar.Add(enPodd);
+            poddKollektion = databas.GetCollection<Podd>("Poddar");
         }
 
-        // READ – hämta alla
-        public List<Podd> GetAll()
+        public async Task SparaPoddAsync(Podd podd)
         {
-            return allaPoddar;
+            if (string.IsNullOrEmpty(podd.Id))
+                podd.Id = ObjectId.GenerateNewId().ToString();
+            await poddKollektion.InsertOneAsync(podd);
         }
 
-        // READ – hämta en pingvin via Id
-        public Podd? GetById(string id)
+        public async Task<List<Podd>> HamtaPoddarForKategoriAsync(string kategoriId)
         {
-            foreach (Podd p in allaPoddar)
-            {
-                if (p.Id.Equals(id))
-                {
-                    return p;
-                }
-            }
-            return null;
+            return await poddKollektion.Find(p => p.KategoriId == kategoriId).ToListAsync();
         }
 
-        // UPDATE – baserat på Id
-        public bool Update(Podd uppdateradPodd)
+        public async Task<bool> TaBortPoddAsync(Podd podd)
         {
-            for (int i = 0; i < allaPoddar.Count; i++)
-            {
-                if (allaPoddar[i].Id == uppdateradPodd.Id)
-                {
-                    allaPoddar[i].Namn = uppdateradPodd.Namn;
-                    return true;
-                }
-            }
-            return false;
+            var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
+            var resultat = await poddKollektion.DeleteOneAsync(filter);
+            return resultat.DeletedCount > 0;
         }
 
-        // DELETE – baserat på Id
-        public bool Delete(Podd id)
+        public async Task<bool> UppdateraPoddNamnAsync(Podd podd, string nyttNamn)
         {
-            for (int i = 0; i < allaPoddar.Count; i++)
-            {
-                if (allaPoddar[i].Id.Equals(id))
-                {
-                    allaPoddar.RemoveAt(i);
-                    return true;
-                }
-            }
-            return false;
+            var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
+            var update = Builders<Podd>.Update.Set(p => p.Namn, nyttNamn);
+            var resultat = await poddKollektion.UpdateOneAsync(filter, update);
+            return resultat.ModifiedCount > 0;
+        }
+
+        public async Task<bool> UppdateraPoddKategoriAsync(Podd podd, string nyKategoriId)
+        {
+            var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
+            var update = Builders<Podd>.Update.Set(p => p.KategoriId, nyKategoriId);
+            var resultat = await poddKollektion.UpdateOneAsync(filter, update);
+            return resultat.ModifiedCount > 0;
         }
 
     }
 }
+
 

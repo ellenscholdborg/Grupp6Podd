@@ -59,27 +59,24 @@ namespace Presentationslagret
             // lblLaggTillRss
             // 
             lblLaggTillRss.AutoSize = true;
-            lblLaggTillRss.Location = new Point(15, 35);
-            lblLaggTillRss.Margin = new Padding(4, 0, 4, 0);
+            lblLaggTillRss.Location = new Point(12, 28);
             lblLaggTillRss.Name = "lblLaggTillRss";
-            lblLaggTillRss.Size = new Size(161, 25);
+            lblLaggTillRss.Size = new Size(134, 20);
             lblLaggTillRss.TabIndex = 0;
             lblLaggTillRss.Text = "Lägg in URL (RSS) :";
             // 
             // textBoxRssLank
             // 
-            textBoxRssLank.Location = new Point(190, 31);
-            textBoxRssLank.Margin = new Padding(4);
+            textBoxRssLank.Location = new Point(152, 25);
             textBoxRssLank.Name = "textBoxRssLank";
-            textBoxRssLank.Size = new Size(324, 31);
+            textBoxRssLank.Size = new Size(260, 27);
             textBoxRssLank.TabIndex = 1;
             // 
             // btnHamtaAvsnitt
             // 
-            btnHamtaAvsnitt.Location = new Point(15, 84);
-            btnHamtaAvsnitt.Margin = new Padding(4);
+            btnHamtaAvsnitt.Location = new Point(12, 67);
             btnHamtaAvsnitt.Name = "btnHamtaAvsnitt";
-            btnHamtaAvsnitt.Size = new Size(168, 36);
+            btnHamtaAvsnitt.Size = new Size(134, 29);
             btnHamtaAvsnitt.TabIndex = 2;
             btnHamtaAvsnitt.Text = "Hämta avsnitt";
             btnHamtaAvsnitt.UseVisualStyleBackColor = true;
@@ -88,60 +85,53 @@ namespace Presentationslagret
             // listBoxAvsnitt
             // 
             listBoxAvsnitt.FormattingEnabled = true;
-            listBoxAvsnitt.Location = new Point(15, 189);
-            listBoxAvsnitt.Margin = new Padding(4);
+            listBoxAvsnitt.Location = new Point(12, 151);
             listBoxAvsnitt.Name = "listBoxAvsnitt";
-            listBoxAvsnitt.Size = new Size(296, 329);
+            listBoxAvsnitt.Size = new Size(238, 264);
             listBoxAvsnitt.TabIndex = 3;
             listBoxAvsnitt.SelectedIndexChanged += listBoxAvsnitt_SelectedIndexChanged;
             // 
             // lblAvsnitt
             // 
             lblAvsnitt.AutoSize = true;
-            lblAvsnitt.Location = new Point(15, 138);
-            lblAvsnitt.Margin = new Padding(4, 0, 4, 0);
+            lblAvsnitt.Location = new Point(12, 110);
             lblAvsnitt.Name = "lblAvsnitt";
-            lblAvsnitt.Size = new Size(71, 25);
+            lblAvsnitt.Size = new Size(57, 20);
             lblAvsnitt.TabIndex = 6;
             lblAvsnitt.Text = "Avsnitt:";
             // 
             // lblGaTillAvsnitt
             // 
             lblGaTillAvsnitt.AutoSize = true;
-            lblGaTillAvsnitt.Location = new Point(340, 138);
-            lblGaTillAvsnitt.Margin = new Padding(4, 0, 4, 0);
+            lblGaTillAvsnitt.Location = new Point(272, 110);
             lblGaTillAvsnitt.Name = "lblGaTillAvsnitt";
-            lblGaTillAvsnitt.Size = new Size(132, 25);
+            lblGaTillAvsnitt.Size = new Size(111, 20);
             lblGaTillAvsnitt.TabIndex = 7;
             lblGaTillAvsnitt.Text = "Gå till avsnittet:";
             // 
             // lblOmAvsnitt
             // 
             lblOmAvsnitt.AutoSize = true;
-            lblOmAvsnitt.Location = new Point(612, 138);
-            lblOmAvsnitt.Margin = new Padding(4, 0, 4, 0);
+            lblOmAvsnitt.Location = new Point(490, 110);
             lblOmAvsnitt.Name = "lblOmAvsnitt";
-            lblOmAvsnitt.Size = new Size(118, 25);
+            lblOmAvsnitt.Size = new Size(96, 20);
             lblOmAvsnitt.TabIndex = 8;
             lblOmAvsnitt.Text = "Om avsnittet:";
             // 
             // comboBoxBytKategori
             // 
             comboBoxBytKategori.FormattingEnabled = true;
-            comboBoxBytKategori.Location = new Point(1248, 669);
-            comboBoxBytKategori.Margin = new Padding(4);
+            comboBoxBytKategori.Location = new Point(998, 535);
             comboBoxBytKategori.Name = "comboBoxBytKategori";
-            comboBoxBytKategori.Size = new Size(188, 33);
+            comboBoxBytKategori.Size = new Size(151, 28);
             comboBoxBytKategori.TabIndex = 9;
             comboBoxBytKategori.Text = "Byt kategori";
-            comboBoxBytKategori.SelectedIndexChanged += comboBoxBytKategori_SelectedIndexChanged;
             // 
             // btnTaBortKategori
             // 
-            btnTaBortKategori.Location = new Point(370, 722);
-            btnTaBortKategori.Margin = new Padding(4);
+            btnTaBortKategori.Location = new Point(296, 578);
             btnTaBortKategori.Name = "btnTaBortKategori";
-            btnTaBortKategori.Size = new Size(184, 38);
+            btnTaBortKategori.Size = new Size(147, 30);
             btnTaBortKategori.TabIndex = 10;
             btnTaBortKategori.Text = "Ta bort kategori";
             btnTaBortKategori.UseVisualStyleBackColor = true;
@@ -149,19 +139,17 @@ namespace Presentationslagret
             // 
             // rtbGaTillAvsnitt
             // 
-            rtbGaTillAvsnitt.Location = new Point(340, 189);
-            rtbGaTillAvsnitt.Margin = new Padding(4);
+            rtbGaTillAvsnitt.Location = new Point(272, 151);
             rtbGaTillAvsnitt.Name = "rtbGaTillAvsnitt";
-            rtbGaTillAvsnitt.Size = new Size(250, 329);
+            rtbGaTillAvsnitt.Size = new Size(201, 264);
             rtbGaTillAvsnitt.TabIndex = 11;
             rtbGaTillAvsnitt.Text = "";
             // 
             // rtbOmAvsnitt
             // 
-            rtbOmAvsnitt.Location = new Point(612, 189);
-            rtbOmAvsnitt.Margin = new Padding(4);
+            rtbOmAvsnitt.Location = new Point(490, 151);
             rtbOmAvsnitt.Name = "rtbOmAvsnitt";
-            rtbOmAvsnitt.Size = new Size(372, 329);
+            rtbOmAvsnitt.Size = new Size(298, 264);
             rtbOmAvsnitt.TabIndex = 12;
             rtbOmAvsnitt.Text = "";
             rtbOmAvsnitt.TextChanged += richTextBox1_TextChanged;
@@ -169,29 +157,26 @@ namespace Presentationslagret
             // lblMinaKategorier
             // 
             lblMinaKategorier.AutoSize = true;
-            lblMinaKategorier.Location = new Point(15, 559);
-            lblMinaKategorier.Margin = new Padding(4, 0, 4, 0);
+            lblMinaKategorier.Location = new Point(12, 447);
             lblMinaKategorier.Name = "lblMinaKategorier";
-            lblMinaKategorier.Size = new Size(140, 25);
+            lblMinaKategorier.Size = new Size(117, 20);
             lblMinaKategorier.TabIndex = 13;
             lblMinaKategorier.Text = "Mina kategorier:";
             // 
             // listBoxKategori
             // 
             listBoxKategori.FormattingEnabled = true;
-            listBoxKategori.Location = new Point(15, 588);
-            listBoxKategori.Margin = new Padding(4);
+            listBoxKategori.Location = new Point(12, 470);
             listBoxKategori.Name = "listBoxKategori";
-            listBoxKategori.Size = new Size(346, 379);
+            listBoxKategori.Size = new Size(278, 304);
             listBoxKategori.TabIndex = 14;
             listBoxKategori.SelectedIndexChanged += listBoxKategori_SelectedIndexChanged;
             // 
             // btnSparaNyKategori
             // 
-            btnSparaNyKategori.Location = new Point(676, 610);
-            btnSparaNyKategori.Margin = new Padding(4);
+            btnSparaNyKategori.Location = new Point(541, 488);
             btnSparaNyKategori.Name = "btnSparaNyKategori";
-            btnSparaNyKategori.Size = new Size(116, 35);
+            btnSparaNyKategori.Size = new Size(93, 28);
             btnSparaNyKategori.TabIndex = 15;
             btnSparaNyKategori.Text = "Spara";
             btnSparaNyKategori.UseVisualStyleBackColor = true;
@@ -199,10 +184,9 @@ namespace Presentationslagret
             // 
             // btnLaggTillKategori
             // 
-            btnLaggTillKategori.Location = new Point(370, 664);
-            btnLaggTillKategori.Margin = new Padding(4);
+            btnLaggTillKategori.Location = new Point(296, 531);
             btnLaggTillKategori.Name = "btnLaggTillKategori";
-            btnLaggTillKategori.Size = new Size(184, 40);
+            btnLaggTillKategori.Size = new Size(147, 32);
             btnLaggTillKategori.TabIndex = 16;
             btnLaggTillKategori.Text = "Lägg till i kategori";
             btnLaggTillKategori.UseVisualStyleBackColor = true;
@@ -211,29 +195,26 @@ namespace Presentationslagret
             // lblAllaPoddfloden
             // 
             lblAllaPoddfloden.AutoSize = true;
-            lblAllaPoddfloden.Location = new Point(825, 559);
-            lblAllaPoddfloden.Margin = new Padding(4, 0, 4, 0);
+            lblAllaPoddfloden.Location = new Point(660, 447);
             lblAllaPoddfloden.Name = "lblAllaPoddfloden";
-            lblAllaPoddfloden.Size = new Size(234, 25);
+            lblAllaPoddfloden.Size = new Size(196, 20);
             lblAllaPoddfloden.TabIndex = 17;
             lblAllaPoddfloden.Text = "Alla poddflöden i kategorin:";
             // 
             // listBoxAllaPoddfloden
             // 
             listBoxAllaPoddfloden.FormattingEnabled = true;
-            listBoxAllaPoddfloden.Location = new Point(825, 588);
-            listBoxAllaPoddfloden.Margin = new Padding(4);
+            listBoxAllaPoddfloden.Location = new Point(660, 470);
             listBoxAllaPoddfloden.Name = "listBoxAllaPoddfloden";
-            listBoxAllaPoddfloden.Size = new Size(403, 379);
+            listBoxAllaPoddfloden.Size = new Size(323, 304);
             listBoxAllaPoddfloden.TabIndex = 18;
             listBoxAllaPoddfloden.SelectedIndexChanged += listBoxAllaPoddfloden_SelectedIndexChanged;
             // 
             // btnTaBortPoddflode
             // 
-            btnTaBortPoddflode.Location = new Point(1248, 724);
-            btnTaBortPoddflode.Margin = new Padding(4);
+            btnTaBortPoddflode.Location = new Point(998, 579);
             btnTaBortPoddflode.Name = "btnTaBortPoddflode";
-            btnTaBortPoddflode.Size = new Size(185, 36);
+            btnTaBortPoddflode.Size = new Size(148, 29);
             btnTaBortPoddflode.TabIndex = 19;
             btnTaBortPoddflode.Text = "Ta bort poddflöde";
             btnTaBortPoddflode.UseVisualStyleBackColor = true;
@@ -241,10 +222,9 @@ namespace Presentationslagret
             // 
             // btnSparaNyttNamn
             // 
-            btnSparaNyttNamn.Location = new Point(1502, 609);
-            btnSparaNyttNamn.Margin = new Padding(4);
+            btnSparaNyttNamn.Location = new Point(1202, 487);
             btnSparaNyttNamn.Name = "btnSparaNyttNamn";
-            btnSparaNyttNamn.Size = new Size(115, 36);
+            btnSparaNyttNamn.Size = new Size(92, 29);
             btnSparaNyttNamn.TabIndex = 20;
             btnSparaNyttNamn.Text = "Spara";
             btnSparaNyttNamn.UseVisualStyleBackColor = true;
@@ -252,10 +232,9 @@ namespace Presentationslagret
             // 
             // btnLaggTillNyKategori
             // 
-            btnLaggTillNyKategori.Location = new Point(488, 996);
-            btnLaggTillNyKategori.Margin = new Padding(4);
+            btnLaggTillNyKategori.Location = new Point(390, 797);
             btnLaggTillNyKategori.Name = "btnLaggTillNyKategori";
-            btnLaggTillNyKategori.Size = new Size(118, 36);
+            btnLaggTillNyKategori.Size = new Size(94, 29);
             btnLaggTillNyKategori.TabIndex = 21;
             btnLaggTillNyKategori.Text = "Lägg till";
             btnLaggTillNyKategori.UseVisualStyleBackColor = true;
@@ -264,82 +243,74 @@ namespace Presentationslagret
             // lblSkapaNyKategori
             // 
             lblSkapaNyKategori.AutoSize = true;
-            lblSkapaNyKategori.Location = new Point(24, 1001);
-            lblSkapaNyKategori.Margin = new Padding(4, 0, 4, 0);
+            lblSkapaNyKategori.Location = new Point(19, 801);
             lblSkapaNyKategori.Name = "lblSkapaNyKategori";
-            lblSkapaNyKategori.Size = new Size(158, 25);
+            lblSkapaNyKategori.Size = new Size(130, 20);
             lblSkapaNyKategori.TabIndex = 22;
             lblSkapaNyKategori.Text = "Skapa ny kategori:";
             // 
             // textBoxAngeNyKategori
             // 
-            textBoxAngeNyKategori.Location = new Point(194, 998);
-            textBoxAngeNyKategori.Margin = new Padding(4);
+            textBoxAngeNyKategori.Location = new Point(155, 798);
             textBoxAngeNyKategori.Name = "textBoxAngeNyKategori";
-            textBoxAngeNyKategori.Size = new Size(270, 31);
+            textBoxAngeNyKategori.Size = new Size(217, 27);
             textBoxAngeNyKategori.TabIndex = 23;
             // 
             // richTextBoxLankTillPoddflode
             // 
-            richTextBoxLankTillPoddflode.Location = new Point(1646, 588);
-            richTextBoxLankTillPoddflode.Margin = new Padding(4);
+            richTextBoxLankTillPoddflode.Location = new Point(1317, 470);
             richTextBoxLankTillPoddflode.Name = "richTextBoxLankTillPoddflode";
-            richTextBoxLankTillPoddflode.Size = new Size(288, 379);
+            richTextBoxLankTillPoddflode.Size = new Size(231, 304);
             richTextBoxLankTillPoddflode.TabIndex = 24;
             richTextBoxLankTillPoddflode.Text = "";
-            richTextBoxLankTillPoddflode.TextChanged += richTextBoxLankTillPoddflode_TextChanged;
             // 
             // lblLankTillPoddflode
             // 
             lblLankTillPoddflode.AutoSize = true;
-            lblLankTillPoddflode.Location = new Point(1646, 559);
-            lblLankTillPoddflode.Margin = new Padding(4, 0, 4, 0);
+            lblLankTillPoddflode.Location = new Point(1317, 447);
             lblLankTillPoddflode.Name = "lblLankTillPoddflode";
-            lblLankTillPoddflode.Size = new Size(165, 25);
+            lblLankTillPoddflode.Size = new Size(138, 20);
             lblLankTillPoddflode.TabIndex = 25;
             lblLankTillPoddflode.Text = "Länk till poddflöde:";
             // 
             // textBoxAngeNyttNamnPodd
             // 
-            textBoxAngeNyttNamnPodd.Location = new Point(1248, 611);
-            textBoxAngeNyttNamnPodd.Margin = new Padding(4);
+            textBoxAngeNyttNamnPodd.Location = new Point(998, 489);
             textBoxAngeNyttNamnPodd.Name = "textBoxAngeNyttNamnPodd";
-            textBoxAngeNyttNamnPodd.Size = new Size(246, 31);
+            textBoxAngeNyttNamnPodd.Size = new Size(198, 27);
             textBoxAngeNyttNamnPodd.TabIndex = 26;
             // 
             // textBoxAndraNamnKategori
             // 
-            textBoxAndraNamnKategori.Location = new Point(370, 611);
-            textBoxAndraNamnKategori.Margin = new Padding(4);
+            textBoxAndraNamnKategori.Location = new Point(296, 489);
             textBoxAndraNamnKategori.Name = "textBoxAndraNamnKategori";
-            textBoxAndraNamnKategori.Size = new Size(298, 31);
+            textBoxAndraNamnKategori.Size = new Size(239, 27);
             textBoxAndraNamnKategori.TabIndex = 27;
             // 
             // lblAngeNyttNamn
             // 
             lblAngeNyttNamn.AutoSize = true;
-            lblAngeNyttNamn.Location = new Point(1248, 582);
-            lblAngeNyttNamn.Margin = new Padding(4, 0, 4, 0);
+            lblAngeNyttNamn.Location = new Point(998, 466);
             lblAngeNyttNamn.Name = "lblAngeNyttNamn";
-            lblAngeNyttNamn.Size = new Size(259, 25);
+            lblAngeNyttNamn.Size = new Size(213, 20);
             lblAngeNyttNamn.TabIndex = 28;
             lblAngeNyttNamn.Text = "Ange nytt namn på poddflöde:";
             // 
             // lblNyttNamnKategori
             // 
             lblNyttNamnKategori.AutoSize = true;
-            lblNyttNamnKategori.Location = new Point(370, 582);
-            lblNyttNamnKategori.Margin = new Padding(4, 0, 4, 0);
+            lblNyttNamnKategori.Location = new Point(296, 466);
             lblNyttNamnKategori.Name = "lblNyttNamnKategori";
-            lblNyttNamnKategori.Size = new Size(239, 25);
+            lblNyttNamnKategori.Size = new Size(197, 20);
             lblNyttNamnKategori.TabIndex = 29;
             lblNyttNamnKategori.Text = "Ange nytt namn på kategori:";
             // 
             // btnSparaBytKategori
             // 
-            btnSparaBytKategori.Location = new Point(1505, 670);
+            btnSparaBytKategori.Location = new Point(1204, 536);
+            btnSparaBytKategori.Margin = new Padding(2, 2, 2, 2);
             btnSparaBytKategori.Name = "btnSparaBytKategori";
-            btnSparaBytKategori.Size = new Size(112, 34);
+            btnSparaBytKategori.Size = new Size(90, 27);
             btnSparaBytKategori.TabIndex = 30;
             btnSparaBytKategori.Text = "Spara";
             btnSparaBytKategori.UseVisualStyleBackColor = true;
@@ -347,9 +318,9 @@ namespace Presentationslagret
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1924, 1048);
+            ClientSize = new Size(1539, 838);
             Controls.Add(btnSparaBytKategori);
             Controls.Add(lblNyttNamnKategori);
             Controls.Add(lblAngeNyttNamn);
@@ -379,7 +350,6 @@ namespace Presentationslagret
             Controls.Add(btnHamtaAvsnitt);
             Controls.Add(textBoxRssLank);
             Controls.Add(lblLaggTillRss);
-            Margin = new Padding(4);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;

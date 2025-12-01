@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Presentationslagret
 {
-    internal static class Program
+    public static class Program
     {
 
         [STAThread]
@@ -16,10 +16,17 @@ namespace Presentationslagret
             HttpClient http = new HttpClient();
             var klient = new PoddRSS(http);
 
-            var service = new PoddService(klient);
+            var mongoService = new MongoDBService();
+            var databas = mongoService.GetDatabase();
+
+            var kategoriRepo = new KategoriRepository(databas);
+            var poddRepo = new PoddRepository(databas);
+
+            var kategoriService = new KategoriService(kategoriRepo);
+            var poddService = new PoddService(klient, poddRepo);
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1(service));
+            Application.Run(new Form1(poddService, kategoriService));
         }
     }
 }

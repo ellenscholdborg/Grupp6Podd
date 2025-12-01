@@ -10,16 +10,16 @@ namespace Presentationslagret
 {
     public partial class Form1 : Form
     {
-        private PoddService enPoddService;
         private List<Avsnitt> allaAvsnitt;
         private MongoDBService mongo;
         private BindingList<Kategori> allaKategorierBinding;
         private BindingList<Podd> allaPoddarBinding;
-
-        public Form1(PoddService enPoddService)
+        private readonly IPoddService poddService;
+        private readonly IKategoriService kategoriService;
+        public Form1(IPoddService poddService, IKategoriService kategoriService)
         {
-            this.enPoddService = enPoddService;
-            mongo = new MongoDBService();
+            this.poddService = poddService;
+            this.kategoriService = kategoriService;
             InitializeComponent();
         }
 
@@ -32,7 +32,7 @@ namespace Presentationslagret
                 källa.Id = Guid.NewGuid().ToString();
                 källa.Url = textBoxRssLank.Text;
 
-                allaAvsnitt = await enPoddService.LasInAllaAvsnitt(källa);
+                allaAvsnitt = await poddService.LasInAllaAvsnitt(källa);
 
                 listBoxAvsnitt.DataSource = null;
                 listBoxAvsnitt.DisplayMember = "Rubrik";
@@ -98,7 +98,7 @@ namespace Presentationslagret
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
             textBoxAndraNamnKategori.Text = valdKategori.Namn;
             
-            var poddar = await mongo.HamtaPoddarForKategoriAsync(valdKategori.Id);
+            var poddar = await poddService.HamtaPoddarForKategoriAsync(valdKategori.Id);
 
             allaPoddarBinding = new BindingList<Podd>(poddar);
             listBoxAllaPoddfloden.DataSource = allaPoddarBinding;
@@ -131,7 +131,7 @@ namespace Presentationslagret
             {
                 try
                 {
-                    bool lyckades = await mongo.TaBortKategoriAsync(kategori.Id);
+                    bool lyckades = await kategoriService.TaBortKategoriAsync(kategori);
 
                     if (lyckades)
 
@@ -165,7 +165,7 @@ namespace Presentationslagret
 
             var nyKategori = new Kategori { Namn = nyKategoriNamn };
 
-            await mongo.SparaKategori(nyKategori);
+            await kategoriService.SparaKategori(nyKategori);
 
             allaKategorierBinding.Add(nyKategori);
 
@@ -176,7 +176,7 @@ namespace Presentationslagret
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            var allaKategorier = await mongo.HamtaAllaKategorierAsync();
+            var allaKategorier = await kategoriService.HamtaAllaKategorierAsync();
             allaKategorierBinding = new BindingList<Kategori>(allaKategorier);
 
             listBoxKategori.DisplayMember = "Namn";
@@ -209,7 +209,7 @@ namespace Presentationslagret
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
             string rss = textBoxRssLank.Text.Trim();
 
-            string poddNamn = await enPoddService.HamtaPoddTitel(rss);
+            string poddNamn = await poddService.HamtaPoddTitel(rss);
 
             if (string.IsNullOrEmpty(poddNamn))
                 poddNamn = rss;
@@ -221,7 +221,7 @@ namespace Presentationslagret
                 KategoriId = valdKategori.Id
             };
 
-            await mongo.SparaPoddAsync(nyPodd);
+            await poddService.SparaPoddAsync(nyPodd);
 
             if (allaPoddarBinding != null && listBoxAllaPoddfloden.DataSource == allaPoddarBinding)
             {
@@ -258,7 +258,7 @@ namespace Presentationslagret
             {
                 try
                 {
-                    bool lyckades = await mongo.TaBortPoddflodeAsync(podd.Id);
+                    bool lyckades = await poddService.TaBortPoddflodeAsync(podd);
 
                     if (lyckades)
 
@@ -304,7 +304,7 @@ namespace Presentationslagret
 
             var valdKategori = (Kategori)listBoxKategori.SelectedItem;
 
-            bool lyckades = await mongo.UppdateraKategoriNamnAsync(valdKategori.Id, nyttNamn);
+            bool lyckades = await kategoriService.UppdateraKategoriNamnAsync(valdKategori, nyttNamn);
 
             if (lyckades)
             {
@@ -338,7 +338,7 @@ namespace Presentationslagret
 
             var valdPodd = (Podd)listBoxAllaPoddfloden.SelectedItem;
 
-            bool lyckades = await mongo.UppdateraPoddflodeNamnAsync(valdPodd.Id, nyttNamn);
+            bool lyckades = await poddService.UppdateraPoddflodeNamnAsync(valdPodd, nyttNamn);
 
             if (lyckades)
             {
@@ -373,15 +373,6 @@ namespace Presentationslagret
 
         }
 
-        private async void comboBoxBytKategori_SelectedIndexChanged(object sender, EventArgs e)
-
-        {
-
-
-
-
-        }
-
         private async void btnSparaBytKategori_Click(object sender, EventArgs e)
         {
             if (listBoxAllaPoddfloden.SelectedItem == null)
@@ -405,7 +396,7 @@ namespace Presentationslagret
                 return;
             }
 
-            bool lyckades = await mongo.UppdateraPoddKategoriAsync(valdPodd.Id, nyKategori.Id);
+            bool lyckades = await poddService.UppdateraPoddKategoriAsync(valdPodd, nyKategori.Id);
 
             if (!lyckades)
             {
@@ -427,11 +418,6 @@ namespace Presentationslagret
             }
 
             MessageBox.Show($"Poddflödet '{valdPodd.Namn}' har bytt kategori till '{nyKategori.Namn}'.");
-        }
-
-        private void richTextBoxLankTillPoddflode_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

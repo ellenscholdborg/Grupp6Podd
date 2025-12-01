@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Affärslagret
+namespace Datalagret
 {
-    public interface IKategoriService
+    public interface IKategoriRepository
     {
-        Task SparaKategori(Kategori kategori);
+        Task SparaKategoriAsync(Kategori kategori);
         Task<List<Kategori>> HamtaAllaKategorierAsync();
         Task<bool> TaBortKategoriAsync(Kategori kategori);
         Task<bool> UppdateraKategoriNamnAsync(Kategori kategori, string nyttNamn);
     }
 }
-
