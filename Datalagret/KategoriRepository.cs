@@ -13,17 +13,36 @@ namespace Datalagret
     {
         private readonly IMongoCollection<Kategori> kategoriKollektion;
 
-        public KategoriRepository(IMongoDatabase databas)
+        private readonly MongoDBService context;
+
+
+        public KategoriRepository(MongoDBService context)
         {
-            kategoriKollektion = databas.GetCollection<Kategori>("Kategorier");
+            this.context = context;
+            kategoriKollektion = context.kategoriKollektion;
         }
 
         public async Task SparaKategoriAsync(Kategori kategori)
         {
-            if (string.IsNullOrEmpty(kategori.Id))
-                kategori.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+            using var session = await context.Klient.StartSessionAsync();
+            session.StartTransaction();
 
-            await kategoriKollektion.InsertOneAsync(kategori);
+            try
+            {
+                await kategoriKollektion.InsertOneAsync(session, kategori);
+                await session.CommitTransactionAsync();
+            }
+
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
+            //if (string.IsNullOrEmpty(kategori.Id))
+
+            //    kategori.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+
+            //await kategoriKollektion.InsertOneAsync(kategori);
         }
 
         public async Task<List<Kategori>> HamtaAllaKategorierAsync()

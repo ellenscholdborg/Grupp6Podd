@@ -18,7 +18,20 @@ namespace Datalagret
         {
             if (string.IsNullOrEmpty(podd.Id))
                 podd.Id = ObjectId.GenerateNewId().ToString();
-            await poddKollektion.InsertOneAsync(podd);
+
+            var client = poddKollektion.Database.Client;
+            using var session = await client.StartSessionAsync();
+            session.StartTransaction();
+            try
+            {
+                await poddKollektion.InsertOneAsync(session, podd);
+                await session.CommitTransactionAsync();
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
         }
 
         public async Task<List<Podd>> HamtaPoddarForKategoriAsync(string kategoriId)
@@ -29,24 +42,63 @@ namespace Datalagret
         public async Task<bool> TaBortPoddAsync(Podd podd)
         {
             var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
-            var resultat = await poddKollektion.DeleteOneAsync(filter);
-            return resultat.DeletedCount > 0;
+
+            var client = poddKollektion.Database.Client;
+            using var session = await client.StartSessionAsync();
+            session.StartTransaction();
+            try
+            {
+                var resultat = await poddKollektion.DeleteOneAsync(session, filter);
+                await session.CommitTransactionAsync();
+                return resultat.DeletedCount > 0;
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
         }
 
         public async Task<bool> UppdateraPoddNamnAsync(Podd podd, string nyttNamn)
         {
             var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
             var update = Builders<Podd>.Update.Set(p => p.Namn, nyttNamn);
-            var resultat = await poddKollektion.UpdateOneAsync(filter, update);
-            return resultat.ModifiedCount > 0;
+
+            var client = poddKollektion.Database.Client;
+            using var session = await client.StartSessionAsync();
+            session.StartTransaction();
+            try
+            {
+                var resultat = await poddKollektion.UpdateOneAsync(session, filter, update);
+                await session.CommitTransactionAsync();
+                return resultat.ModifiedCount > 0;
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
         }
 
         public async Task<bool> UppdateraPoddKategoriAsync(Podd podd, string nyKategoriId)
         {
             var filter = Builders<Podd>.Filter.Eq(p => p.Id, podd.Id);
             var update = Builders<Podd>.Update.Set(p => p.KategoriId, nyKategoriId);
-            var resultat = await poddKollektion.UpdateOneAsync(filter, update);
-            return resultat.ModifiedCount > 0;
+
+            var client = poddKollektion.Database.Client;
+            using var session = await client.StartSessionAsync();
+            session.StartTransaction();
+            try
+            {
+                var resultat = await poddKollektion.UpdateOneAsync(session, filter, update);
+                await session.CommitTransactionAsync();
+                return resultat.ModifiedCount > 0;
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
         }
 
     }

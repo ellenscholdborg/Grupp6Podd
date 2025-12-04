@@ -37,13 +37,19 @@ namespace Affärslagret
             return avsnitt;
         }
 
+        
         public async Task<string> HamtaPoddTitel(string rssUrl)
         {
             try
             {
-                var reader = XmlReader.Create(rssUrl);
-                var feed = SyndicationFeed.Load(reader);
-                return feed.Title?.Text ?? null;
+                using var httpClient = new HttpClient();
+                var xmlData = await httpClient.GetStringAsync(rssUrl); 
+
+                using var stringReader = new StringReader(xmlData);
+                using var xmlReader = XmlReader.Create(stringReader);
+
+                var feed = SyndicationFeed.Load(xmlReader);
+                return feed?.Title?.Text;
             }
             catch
             {

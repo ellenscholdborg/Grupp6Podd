@@ -15,13 +15,15 @@ namespace Datalagret
         public IMongoCollection<Kategori> kategoriKollektion { get; }
         public IMongoCollection<Podd> poddKollektion { get; }
 
+        public MongoClient Klient { get; }
+
         public MongoDBService()
         {
 
-            var klient = new MongoClient("mongodb+srv://ellish100_db_user:PoddGrupp6@poddprojektgrupp6.jnfv6bw.mongodb.net/?retryWrites=true&w=majority&appName=PoddProjektGrupp6");
-            databas = klient.GetDatabase("PoddProjektGrupp6");
-            kategoriKollektion = databas.GetCollection<Kategori>("Kategorier");
-            poddKollektion = databas.GetCollection<Podd>("Poddar");
+             Klient = new MongoClient("mongodb+srv://ellish100_db_user:PoddGrupp6@poddprojektgrupp6.jnfv6bw.mongodb.net/?retryWrites=true&w=majority&appName=PoddProjektGrupp6");
+             this.databas = Klient.GetDatabase("PoddProjektGrupp6");
+            kategoriKollektion = this.databas.GetCollection<Kategori>("Kategorier");
+            poddKollektion = this.databas.GetCollection<Podd>("Poddar");
         }
         public IMongoDatabase GetDatabase()
         {
